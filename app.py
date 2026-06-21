@@ -11,7 +11,7 @@ st.set_page_config(
     layout="centered"
 )
 
-st.title("🔋 Battery Health Estimator")
+st.title("🔋 Battery SOH Prediction System")
 
 with st.expander("About This Project"):
 
