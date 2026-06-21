@@ -83,6 +83,18 @@ with tab1:
 
     st.subheader("Upload Battery Cycle Data")
 
+    st.info("""
+    Required CSV Columns:
+
+    • Voltage_measured
+    • Temperature_measured
+    • Current_measured
+    • Time
+
+    The application automatically extracts battery features
+    and predicts battery capacity and battery health.
+    """)
+    
     uploaded_file = st.file_uploader(
         "Choose a battery CSV file",
         type=["csv"]
@@ -92,6 +104,19 @@ with tab1:
 
         try:
             sample = pd.read_csv(uploaded_file)
+
+            required_columns = [
+                "Voltage_measured",
+                "Temperature_measured",
+                "Current_measured",
+                "Time"
+            ]
+
+            if not all(col in sample.columns for col in required_columns):
+                st.error(
+                    "Invalid CSV format. Please upload a CSV containing the required columns."
+                )
+                st.stop()
 
             features = pd.DataFrame([{
                 "mean_voltage": sample["Voltage_measured"].mean(),
@@ -120,6 +145,10 @@ with tab1:
 with tab2:
 
     st.subheader("Advanced Battery Measurements")
+
+    st.caption(
+        "For users who have access to battery measurement data."
+    )
 
     voltage = st.number_input(
         "Battery Voltage (V)",
